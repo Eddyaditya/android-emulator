@@ -27,6 +27,9 @@ set(SOURCES
     src/ui_window.cpp
     src/frame_buffer.cpp
     src/input_handler.cpp
+    src/gapps_config.cpp
+    src/gapps_manager.cpp
+    src/play_store.cpp
 )
 
 # Create the executable
