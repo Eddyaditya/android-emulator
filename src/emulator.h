@@ -1,0 +1,1 @@
+#ifndef EMULATOR_H\n#define EMULATOR_H\n\nclass Emulator {\npublic:\n    Emulator();\n    ~Emulator();\n    void start();\n    void stop();\n};\n\n#endif // EMULATOR_H
