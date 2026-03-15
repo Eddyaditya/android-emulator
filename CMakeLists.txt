@@ -7,14 +7,19 @@ project(EDU_Emulator)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Add source files
-set(SOURCES 
+# Make headers in src/ available via unqualified #include "..."
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
+# Source files
+set(SOURCES
     main.cpp
-    emulator.cpp
-    emulator.h
+    src/emulator.cpp
+    src/qemu_config.cpp
+    src/qemu_manager.cpp
+    src/ui_manager.cpp
 )
 
-# Create an executable
+# Create the executable
 add_executable(edu_emulator ${SOURCES})
 
 # Link libraries if needed

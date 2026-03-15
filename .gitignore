@@ -8,6 +8,10 @@
 *.dll
 *.class
 
+# CMake build directory
+build/
+cmake-build-*/
+
 # IDE configuration files
 .vscode/
 *.sublime-workspace
