@@ -267,3 +267,53 @@ scripts\install_gapps.bat --image android-x86.img --download --variant pico
 
 For the full guide — including variant selection, manual installation, troubleshooting, rollback, and alternative app stores — see [docs/GAPPS_GUIDE.md](docs/GAPPS_GUIDE.md).
 
+---
+
+## ADB & Developer Tools
+
+The Android Debug Bridge (ADB) lets you interact with the running emulator: open a shell, transfer files, install APKs, and view system logs.
+
+> **Prerequisites:** Install the Android SDK **platform-tools** (provides `adb`).  
+> See [docs/ADB_GUIDE.md](docs/ADB_GUIDE.md) for installation instructions.
+
+### Quick Connect (Linux / macOS)
+
+```bash
+chmod +x scripts/enable_adb.sh
+./scripts/enable_adb.sh
+```
+
+### Quick Connect (Windows)
+
+```bat
+scripts\enable_adb.bat
+```
+
+Both scripts will:
+- Start the ADB server
+- Connect to the emulator on `localhost:5555`
+- Verify the connection with `adb devices`
+
+### Common ADB Commands
+
+```bash
+# Interactive shell
+adb -s localhost:5555 shell
+
+# Transfer files
+adb -s localhost:5555 push ./file.txt /sdcard/file.txt
+adb -s localhost:5555 pull /sdcard/file.txt ./file.txt
+
+# Install an APK
+adb -s localhost:5555 install MyApp.apk
+
+# View system logs
+adb -s localhost:5555 logcat
+```
+
+> **⚠ Root access warning:** Root access gives full control of the Android system. Only enable it in a trusted development environment. See [docs/DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md) for security best practices.
+
+For the full ADB command reference and root access instructions, see:
+- [docs/ADB_GUIDE.md](docs/ADB_GUIDE.md) — ADB setup and usage
+- [docs/DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md) — Security guide and best practices
+

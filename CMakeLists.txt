@@ -30,6 +30,9 @@ set(SOURCES
     src/gapps_config.cpp
     src/gapps_manager.cpp
     src/play_store.cpp
+    src/adb_config.cpp
+    src/adb_manager.cpp
+    src/root_manager.cpp
 )
 
 # Create the executable
