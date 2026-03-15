@@ -23,8 +23,7 @@ UIManager::~UIManager() {
 bool UIManager::initSDL(int width, int height, const std::string& title) {
     uiWindow = std::make_unique<UIWindow>();
     if (!uiWindow->create(width, height, title)) {
-        std::cerr << "[UIManager] SDL2 window creation failed; "
-                     "falling back to console mode." << std::endl;
+        std::cerr << "[UIManager] SDL2 window creation failed; falling back to console mode." << std::endl;
         uiWindow.reset();
         return false;
     }
