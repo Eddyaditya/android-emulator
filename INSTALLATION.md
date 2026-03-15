@@ -244,3 +244,26 @@ export SDL_VIDEODRIVER=offscreen
 ```
 In this mode only console output is produced; the SDL2 window is suppressed.
 
+---
+
+## GApps (Google Play Store & Chrome)
+
+Open GApps can be installed into the Android-x86 image to enable the Google Play Store and Chrome browser.
+
+> **Legal notice:** Google's apps are proprietary software. By installing GApps you agree to [Google's Terms of Service](https://policies.google.com/terms) and the [Google Play Terms of Service](https://play.google.com/intl/en_us/about/play-terms/). This feature is intended for educational and personal development use only.
+
+### Quick Install (Linux / macOS)
+
+```bash
+chmod +x scripts/install_gapps.sh
+./scripts/install_gapps.sh --image android-x86.img --download --variant pico
+```
+
+### Quick Install (Windows)
+
+```bat
+scripts\install_gapps.bat --image android-x86.img --download --variant pico
+```
+
+For the full guide — including variant selection, manual installation, troubleshooting, rollback, and alternative app stores — see [docs/GAPPS_GUIDE.md](docs/GAPPS_GUIDE.md).
+
