@@ -10,6 +10,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Make headers in src/ available via unqualified #include "..."
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
+# ---------------------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------------------
+find_package(Threads REQUIRED)
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
 # Source files
 set(SOURCES
     main.cpp
@@ -17,10 +24,13 @@ set(SOURCES
     src/qemu_config.cpp
     src/qemu_manager.cpp
     src/ui_manager.cpp
+    src/ui_window.cpp
+    src/frame_buffer.cpp
+    src/input_handler.cpp
 )
 
 # Create the executable
 add_executable(edu_emulator ${SOURCES})
 
-# Link libraries if needed
-# target_link_libraries(edu_emulator some_library)
+# Link against SDL2 and platform threading library
+target_link_libraries(edu_emulator ${SDL2_LIBRARIES} Threads::Threads)

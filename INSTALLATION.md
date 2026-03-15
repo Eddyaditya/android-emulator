@@ -13,6 +13,7 @@ This guide explains how to install and run the **EDU Android Emulator** on Linux
 | CMake | 3.10 | Build system |
 | GCC / Clang (Linux/macOS) or MSVC / MinGW (Windows) | C++14 support | Compiler |
 | QEMU (`qemu-system-x86_64`) | 6.0+ | Android x86 emulation |
+| SDL2 | 2.0.5+ | Display window and input handling |
 
 #### Install QEMU
 
@@ -35,6 +36,43 @@ brew install qemu
 **Windows**
 Download the QEMU installer from <https://qemu.weilnetz.de/w64/> and add the
 install directory (e.g. `C:\Program Files\qemu`) to your `PATH`.
+
+---
+
+## SDL2 Installation
+
+SDL2 is required for the display window and input handling.
+
+### Linux
+
+**Ubuntu / Debian**
+```bash
+sudo apt-get update
+sudo apt-get install -y libsdl2-dev
+```
+
+**Fedora / RHEL / CentOS**
+```bash
+sudo dnf install -y SDL2-devel
+```
+
+**Arch Linux**
+```bash
+sudo pacman -S sdl2
+```
+
+### macOS (Homebrew)
+```bash
+brew install sdl2
+```
+
+### Windows (vcpkg)
+```powershell
+vcpkg install sdl2:x64-windows
+```
+
+Or download the SDL2 development library from <https://www.libsdl.org/download-2.0.php>
+and add it to your Visual Studio / MinGW include and library paths.
 
 ---
 
@@ -130,7 +168,15 @@ The emulator will:
 1. Detect KVM/HAXM automatically
 2. Validate the system image
 3. Spawn `qemu-system-x86_64` with the correct arguments
-4. Display boot status in the console
+4. Open an SDL2 window showing the Android display
+5. Forward keyboard and mouse input to QEMU
+
+### Keyboard shortcuts
+
+| Key | Action |
+|-----|--------|
+| **F11** | Toggle fullscreen / windowed mode |
+| **Ctrl+C** (console) | Stop the emulator |
 
 ---
 
@@ -180,3 +226,21 @@ performance.
 ### Black screen on boot
 Try adding `-vga std` instead of `-vga virtio` in `src/qemu_manager.cpp`
 and rebuild. Some graphics configurations require the standard VGA adapter.
+
+### SDL2 window does not open
+
+- **Linux:** Ensure `libsdl2-dev` (or `libsdl2-2.0-0`) is installed and a
+  display server is running (Wayland or X11). For headless servers, set
+  `SDL_VIDEODRIVER=offscreen` to disable the window (console-only mode).
+- **macOS:** Verify SDL2 is installed via Homebrew: `brew info sdl2`.
+- **Windows:** Confirm `SDL2.dll` is on your `PATH` or in the same directory
+  as `edu_emulator.exe`.
+
+### SDL2: `No available video device`
+The emulator can run without a display by setting the environment variable:
+```bash
+export SDL_VIDEODRIVER=offscreen
+./build/edu_emulator
+```
+In this mode only console output is produced; the SDL2 window is suppressed.
+
