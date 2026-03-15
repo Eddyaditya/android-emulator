@@ -1,1 +1,28 @@
-#ifndef EMULATOR_H\n#define EMULATOR_H\n\nclass Emulator {\npublic:\n    Emulator();\n    ~Emulator();\n    void start();\n    void stop();\n};\n\n#endif // EMULATOR_H
+#ifndef EMULATOR_H
+#define EMULATOR_H
+
+#include "qemu_manager.h"
+#include "ui_manager.h"
+#include <string>
+
+class Emulator {
+private:
+    QEMUManager qemuManager;
+    UIManager uiManager;
+    bool initialized;
+    bool running;
+    std::string version;
+
+public:
+    Emulator();
+    ~Emulator();
+
+    bool initialize();
+    void start();
+    void run();
+    void shutdown();
+    bool isRunning() const;
+    std::string getVersion() const;
+};
+
+#endif // EMULATOR_H
