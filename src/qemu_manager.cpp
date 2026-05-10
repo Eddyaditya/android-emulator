@@ -159,12 +159,12 @@ std::vector<std::string> QEMUManager::buildQEMUArgs() const {
         args.push_back("-cdrom");
         args.push_back(config.imagePath);
         args.push_back("-boot");
-        args.push_back("d");
+        args.push_back("order=d,c,n");
     } else {
         args.push_back("-hda");
         args.push_back(config.imagePath);
         args.push_back("-boot");
-        args.push_back("c");
+        args.push_back("order=c,d,n");
     }
 
     // Display resolution
