@@ -1,5 +1,7 @@
 #include "emulator.h"
+#include <chrono>
 #include <iostream>
+#include <thread>
 
 Emulator::Emulator()
     : initialized(false)
@@ -65,8 +67,32 @@ void Emulator::run() {
     if (!running) {
         return;
     }
-    // Main event loop placeholder — a real implementation would pump SDL2/Qt events
     std::cout << "[Emulator] Running (press Ctrl+C to stop)" << std::endl;
+
+    // Initialize SDL2 and start the display window
+    if (uiManager.initSDL()) {
+        uiManager.startSDL();
+    } else {
+        std::cerr << "[Emulator] SDL2 window initialization failed; running in headless mode" << std::endl;
+    }
+
+    // Main event loop: keep the main thread alive while the emulator is running
+    while (running) {
+        // processEvents() returns false when the user closes the window
+        if (!uiManager.processEvents()) {
+            running = false;
+            break;
+        }
+
+        // Check if QEMU has exited
+        if (!qemuManager.isRunning()) {
+            running = false;
+            break;
+        }
+
+        // Brief sleep to avoid busy-waiting (~60 Hz poll rate)
+        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+    }
 }
 
 void Emulator::shutdown() {
