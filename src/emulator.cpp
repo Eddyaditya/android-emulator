@@ -23,6 +23,10 @@ bool Emulator::initialize() {
         return true;
     }
 
+    if (!uiManager.initSDL(1080, 1920, "EDU Android Emulator")) {
+        std::cerr << "[Emulator] SDL2 initialization failed; continuing in console mode" << std::endl;
+    }
+
     // Forward QEMU log output to the UI manager
     qemuManager.setLogCallback([this](const std::string& msg) {
         uiManager.display(msg);
@@ -67,32 +71,15 @@ void Emulator::run() {
     if (!running) {
         return;
     }
+    uiManager.startSDL();
+
     std::cout << "[Emulator] Running (press Ctrl+C to stop)" << std::endl;
 
-    // Initialize SDL2 and start the display window
-    if (uiManager.initSDL()) {
-        uiManager.startSDL();
-    } else {
-        std::cerr << "[Emulator] SDL2 window initialization failed; running in headless mode" << std::endl;
+    while (running && qemuManager.isRunning() && uiManager.processEvents()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    // Main event loop: keep the main thread alive while the emulator is running
-    while (running) {
-        // processEvents() returns false when the user closes the window
-        if (!uiManager.processEvents()) {
-            running = false;
-            break;
-        }
-
-        // Check if QEMU has exited
-        if (!qemuManager.isRunning()) {
-            running = false;
-            break;
-        }
-
-        // Brief sleep to avoid busy-waiting (~60 Hz poll rate)
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
-    }
+    uiManager.shutdownSDL();
 }
 
 void Emulator::shutdown() {
