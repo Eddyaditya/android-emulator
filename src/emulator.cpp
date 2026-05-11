@@ -1,6 +1,7 @@
 #include "emulator.h"
 #include <chrono>
 #include <iostream>
+#include <sys/stat.h>
 #include <thread>
 
 Emulator::Emulator()
@@ -47,8 +48,13 @@ void Emulator::start() {
 
     uiManager.showBootStatus("Initializing...");
 
-    // Load the default Android x86 system image path (configurable at runtime)
-    const std::string defaultImage = "android-x86.img";
+    // Try ISO first, then fall back to IMG
+    std::string defaultImage = "android-x86.iso";
+    struct stat imageStat;
+    if (stat(defaultImage.c_str(), &imageStat) != 0) {
+        defaultImage = "android-x86.img";
+    }
+
     if (!qemuManager.loadImage(defaultImage)) {
         uiManager.showBootStatus("Error: image not found (" + defaultImage + ")");
         uiManager.showError(qemuManager.getLastError());
