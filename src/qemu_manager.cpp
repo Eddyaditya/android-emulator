@@ -173,7 +173,7 @@ std::vector<std::string> QEMUManager::buildQEMUArgs() const {
     args.push_back("-vga");
     args.push_back("virtio");
     args.push_back("-display");
-    args.push_back("sdl,gl=off");
+    args.push_back("none");
 
     // Network
     args.push_back("-net");
